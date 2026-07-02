@@ -12,20 +12,13 @@
 
 #ifndef STRUCT_H
 # define STRUCT_H
-# include <pthreads.h>
+# include <pthread.h>
 
 typedef enum e_scheduler
 {
 	fifo,
 	edf
 }						t_scheduler;
-
-typedef struct s_heap
-{
-	t_coder				**data;
-	int					size;
-	int					capacity;
-}						t_heap;
 
 typedef struct s_dongle
 {
@@ -64,5 +57,12 @@ typedef struct s_coder
 	pthread_mutex_t		*right_dongle;
 	t_table				*table;
 }							t_coder;
+
+typedef struct s_heap
+{
+	t_coder				**data;
+	int					size;
+	int					capacity;
+}						t_heap;
 
 #endif

@@ -16,7 +16,7 @@ int	main(int ac, char **av)
 {
 	t_table	table;
 
-	if (!parse_args(av, &table))
+	if (!parse_args(ac, av, &table))
 		return (0);
 	codexion(&table);
 	return (0);
@@ -29,11 +29,11 @@ void	codexion(t_table *table)
 		cleanup_table(&table);
 		return ;
 	}
-	while (check_simulation)
+	while (check_simulation(table))
 	{
-		if (table->scheduler == "fifo")
+		if (table->scheduler == fifo)
 			fifo_scheduler(&table);
-		else if (table->scheduler == "edf")
+		else if (table->scheduler == edf)
 			edf_scheduler(&table);
 		table->comps_done++;
 	}

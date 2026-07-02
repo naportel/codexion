@@ -33,6 +33,8 @@ int	go_first(t_coder *a, t_coder *b, t_scheduler scheduler)
 		else
 			return (2);
 	}
+	else
+		return (0);
 }
 
 void	coder_swap(t_coder **a, t_coder **b)
@@ -65,7 +67,7 @@ void	heap_push(t_heap *heap, t_coder *coder, t_scheduler type)
 	}
 }
 
-t_coder	heap_pop(t_heap *heap, t_scheduler type)
+t_coder	*heap_pop(t_heap *heap, t_scheduler type)
 {
 	t_coder	*top_coder;
 	int	current;

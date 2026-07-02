@@ -20,14 +20,20 @@ int	init_table(t_table *table)
 	table->dongles = malloc(sizeof(t_dongle) * table->coder_qnt);
 	table->coders = malloc(sizeof(t_coder) * table->coder_qnt);
 	if (!table->dongles || !table->coders)
-	{
-		error("Malloc Failed!");
-		return (0);
-	}
+		return (error("Malloc Failed!"));
 	pthread_mutex_init(&table->log_mutex, NULL);
-	while (i <= table->coder_qnt)
+	while (i < table->coder_qnt)
 	{
 		table->coders[i].id = i + 1;
+		i++;
+	}
+	i = 0;
+	while (i < table->coder_qnt)
+	{
+		pthread_mutex_init(&table->dongles[i].mutex, NULL);
+		pthread_cond_init(&table->dongles[i].cond, NULL);
+		if (!init_heap(&table->dongles[i].heap, table->coder_qnt))
+			return (error("Malloc Faield!"));
 		i++;
 	}
 	return (1);

@@ -12,30 +12,39 @@
 
 #include "codexion.h"
 
+static int	parse_schedule(char *schedule)
+{
+	if (strcmp(schedule, "fifo") == 0)
+		return (0);
+	else if (strcmp(schedule, "edf") == 0)
+		return (1);
+	else
+		return (2);
+}
+
 int	parse_args(int ac, char **av, t_table *table)
 {
 	int	i;
+	int mune;
 
 	i = 1;
 	if (ac != 9)
-		if (ac < 9)
-			return error("Too few arguments! Expected 8 arguments.");
-		else if (ac > 9)
-			return error("Too many arguments! Expected 8 arguments.");
+		return error("Different quantity of arguments! Expected 8 arguments.");
 	while (i < 8)
 		if (!ft_isnumber(av[i++]))
 			return error("All first 7 arguments must be positive integers!");
-	if (strcmp(av[8], "fifo") != 0 && strcmp(av[8], "edf") != 0)
+	mune = parse_schedule(av[8])
+	if (mune >= 2)
 		return error("Scheduler must be exactly either \"fifo\" or \"edf\"!");
 	*table = (t_table){
-		.coder_qnt = atoi(av[1]);
-		.burnout = atoi(av[2]);
-		.comp_time = atoi(av[3]);
-		.debug_time = atoi(av[4]);
-		.refactor_time = atoi(av[5]);
-		.comps_need = atoi(av[6]);
-		.dongle_cooldown = atoi(av[7]);
-		.scheduler = av[8];
+		.coder_qnt = atoi(av[1]),
+		.burnout = atoi(av[2]),
+		.comp_time = atoi(av[3]),
+		.debug_time = atoi(av[4]),
+		.refactor_time = atoi(av[5]),
+		.comps_need = atoi(av[6]),
+		.dongle_cooldown = atoi(av[7]),
+		.scheduler = mune
     }
 	return (1);
 }

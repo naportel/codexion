@@ -24,7 +24,7 @@ int	init_table(t_table *table)
 	pthread_mutex_init(&table->log_mutex, NULL);
 	while (i < table->coder_qnt)
 	{
-		table->coders[i].id = i + 1;
+		init_coder(table, &table->coders[i], i);
 		i++;
 	}
 	i = 0;
@@ -39,6 +39,18 @@ int	init_table(t_table *table)
 	return (1);
 }
 
+void	init_coder(t_table *table, t_coder *coder, int id)
+{
+	coder->id = id;
+	coder->comps_done = 0;
+	coder->last_comp = get_current_time();
+	pthread_mutex_init(coder->coder_mutex);
+	coder->table = table;
+	coder->left_dongle = table->dongles[2 * id + 1];
+	coder->right_dongle = table->dongles[2 * id + 2];
+	return ;
+}
+
 int	init_threads(t_table *table)
 {
 	int	i;
@@ -49,8 +61,7 @@ int	init_threads(t_table *table)
 		if (pthread_create(&table->coders[i].thread, NULL,
 				coder_routine, &table->coders[i]) != 0)
 		{
-			error("Thread Creation Failed!");
-			return (0);
+			return error("Thread Creation Failed!");
 		}
 		i++;
 	}
@@ -58,7 +69,7 @@ int	init_threads(t_table *table)
 	return (1);
 }
 
-void	cleanup_table(t_table *table)
+void	free_table(t_table *table)
 {
 	int	i;
 
@@ -67,6 +78,7 @@ void	cleanup_table(t_table *table)
 	{
 		while (i < table->coder_qnt)
 		{
+			free(table->dongles[i].heap.data)
 			pthread_mutex_destroy(&table->dongles[i].mutex);
 			pthread_cond_destroy(&table->dongles[i].cond);
 			i++;

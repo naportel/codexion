@@ -53,8 +53,8 @@ typedef struct s_coder
 	long				last_comp;
 	pthread_t			thread;
 	pthread_mutex_t		coder_mutex;
-	pthread_mutex_t		*left_dongle;
-	pthread_mutex_t		*right_dongle;
+	t_dongle			left_dongle;
+	t_dongle			right_dongle;
 	t_table				*table;
 }							t_coder;
 

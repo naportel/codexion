@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routines.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naportel <naportel@student.42.rio>         +#+  +:+       +#+        */
+/*   By: naportel <naportel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 15:01:23 by naportel          #+#    #+#             */
-/*   Updated: 2026/05/27 15:01:25 by naportel         ###   ########.fr       */
+/*   Updated: 2026/08/05 14:58:01 by naportel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,17 +64,25 @@ void	*coder_routine(void *arg)
 
 	coder = (t_coder *)arg;
 	table = coder->table;
-	if (table->simulation_running)
+	coder->last_comp = get_current_time();
+	while (table->simulation_running)
 	{
-		print_log(coder, "is compiling");
-		usleep(table->compile_time * 1000);
-		pthread_mutex_lock(&coder->coder_mutex);
-		coder->last_comp = get_current_time();
-		coder->comps_done++;
-		pthread_mutex_unlock(&coder->coder_mutex);
-		print_log(coder, "finished compiling");
+		lock_dongles(coder);
+		if (!check_simulation(table))
+		{
+			unlock_dongles(coder);
+			break ;
+		}
+		coder_compile(coder);
+		unlock_dongles(coder);
+		if (!check_simulation(table)) break ;
+		print_log(coder, "is debugging");
+		usleep(coder->table->debug_time * 1000);
+		if (!check_simulation(table)) break ;
+		print_log(coder, "is refactoring");
+		usleep(coder->table->refactor_time * 1000);
 	}
-	return (NULL);
+	return ;
 }
 
 void	*monitor_routine(void *table)
@@ -82,5 +90,5 @@ void	*monitor_routine(void *table)
 	(t_table *)table;
 	while (check_simulation((t_table *)table))
 		usleep(1000);
-	return (NULL);
+	return ;
 }

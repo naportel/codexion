@@ -6,7 +6,7 @@
 /*   By: naportel <naportel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/19 14:36:56 by naportel          #+#    #+#             */
-/*   Updated: 2026/06/22 12:46:23 by naportel         ###   ########.fr       */
+/*   Updated: 2026/08/05 16:11:26 by naportel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,10 @@ int	parse_args(int ac, char **av, t_table *table)
 
 	i = 1;
 	if (ac != 9)
-		return error("Different quantity of arguments! Expected 8 arguments.");
+		return (error("Thr program expects 8 arguments."));
 	while (i < 8)
 		if (!ft_isnumber(av[i++]))
-			return error("All first 7 arguments must be positive integers!");
+			return (error("The 1-7th arguments must be Positive Integers!"));
 	mune = parse_schedule(av[8])
 	if (mune >= 2)
 		return error("Scheduler must be exactly either \"fifo\" or \"edf\"!");

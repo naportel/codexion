@@ -6,7 +6,7 @@
 /*   By: naportel <naportel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/22 14:01:42 by naportel          #+#    #+#             */
-/*   Updated: 2026/06/22 14:03:28 by naportel         ###   ########.fr       */
+/*   Updated: 2026/08/05 16:15:54 by naportel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,4 +88,5 @@ void	free_table(t_table *table)
 	if (table->coders)
 		free(table->coders);
 	pthread_mutex_destroy(&table->log_mutex);
+    return ;
 }

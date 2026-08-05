@@ -6,7 +6,7 @@
 /*   By: naportel <naportel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/19 12:03:57 by naportel          #+#    #+#             */
-/*   Updated: 2026/06/22 14:02:33 by naportel         ###   ########.fr       */
+/*   Updated: 2026/08/05 16:16:01 by naportel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,23 +18,11 @@ int	main(int ac, char **av)
 
 	if (!parse_args(ac, av, &table))
 		return (0);
-	codexion(&table);
-	return (0);
-}
-
-void	codexion(t_table *table)
-{
-	if (!init_table(&table) || !init_threads(&table))
-	{
-		cleanup_table(&table);
-		return ;
-	}
-	while (check_simulation(table))
-	{
-		if (table->scheduler == fifo)
-			fifo_scheduler(&table);
-		else if (table->scheduler == edf)
-			edf_scheduler(&table);
-		table->comps_done++;
-	}
+	if (!init_table(&table))
+        return (0);
+    if (!init_threads(&table))
+        return (0);
+    join_threads(&table);
+    free_table(&table);
+	return (0)
 }

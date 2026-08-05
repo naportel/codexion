@@ -6,13 +6,13 @@
 /*   By: naportel <naportel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/19 14:29:18 by naportel          #+#    #+#             */
-/*   Updated: 2026/06/19 14:35:40 by naportel         ###   ########.fr       */
+/*   Updated: 2026/08/05 16:00:56 by naportel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-int	error_print(char *msg)
+int	error(char *msg)
 {
 	if (*msg)
 	{
@@ -23,4 +23,12 @@ int	error_print(char *msg)
 	return (0);
 }
 
+int ft_strlen(char *str)
+{
+	int i;
 
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
+}

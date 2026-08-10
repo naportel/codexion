@@ -6,11 +6,50 @@
 /*   By: naportel <naportel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/19 14:36:56 by naportel          #+#    #+#             */
-/*   Updated: 2026/08/05 16:11:26 by naportel         ###   ########.fr       */
+/*   Updated: 2026/08/10 14:21:04 by naportel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
+
+long	ft_latoi(char *str)
+{
+	long	result;
+	int		i;
+
+	result = 0;
+	i = 0;
+	if (str[i] == '+')
+		i++;
+	while (str[i])
+	{
+		result = result * 10 + (str[i] - '0');
+		if (result > 2147483647)
+			return (-1);
+		i++;
+	}
+	return (result);
+}
+
+int	ft_is_valid_number(char *str)
+{
+	int	i;
+
+	if (!str || !*str)
+		return (0);
+	i = 0;
+	if (str[i] == '+')
+		i++;
+	if(!str[i])
+		return (0);
+	while (str[i])
+	{
+		if (str[i] < '0' || str[i] > '9')
+			return (0);
+		i++;
+	}
+	return (1);
+}
 
 static int	parse_schedule(char *schedule)
 {
@@ -25,35 +64,43 @@ static int	parse_schedule(char *schedule)
 int	parse_args(int ac, char **av, t_table *table)
 {
 	int	i;
-	int mune;
+	int scheduler;
+	long temp;
 
 	i = 1;
 	if (ac != 9)
-		return (error("Thr program expects 8 arguments."));
+		return (error("The program expects 8 arguments."));
 	while (i < 8)
-		if (!ft_isnumber(av[i++]))
-			return (error("The 1-7th arguments must be Positive Integers!"));
-	mune = parse_schedule(av[8])
-	if (mune >= 2)
+	{
+		if (!ft_is_valid_number(av[i++]))
+			return (error("Arguments must contain only positive digits!"));
+		temp = ft_latoi(av[i - 1]);
+		if (temp == -1)
+			return (error("Arguments must be valid digits within INT_MAX!"));
+	}
+	if (ft_latoi(av[1]) < 1)
+		return (error("There must be at least 1 coder!"));
+	else if (ft_latoi(av[6]) < 1)
+		return (error("Coders must need at least 1 compilation!"));
+	scheduler = parse_schedule(av[8]);
+	if (scheduler >= 2)
 		return error("Scheduler must be exactly either \"fifo\" or \"edf\"!");
-	*table = (t_table){
-		.coder_qnt = atoi(av[1]),
-		.burnout = atoi(av[2]),
-		.comp_time = atoi(av[3]),
-		.debug_time = atoi(av[4]),
-		.refactor_time = atoi(av[5]),
-		.comps_need = atoi(av[6]),
-		.dongle_cooldown = atoi(av[7]),
-		.scheduler = mune
-    }
+	*table = define_table(av, scheduler);
 	return (1);
 }
 
-int	ft_isnumber(char *str)
+t_table define_table(char **av, int scheduler)
 {
-	int	result;
+	t_table	table;
 
-	result = atoi(str);
-	if (result == 0)
-		return (0);
+	table.coder_qnt = ft_latoi(av[1]);
+	table.burnout = ft_latoi(av[2]);
+	table.comp_time = ft_latoi(av[3]);
+	table.debug_time = ft_latoi(av[4]);
+	table.refactor_time = ft_latoi(av[5]);
+	table.comps_need = ft_latoi(av[6]);
+	table.dongle_cooldown = ft_latoi(av[7]);
+	table.scheduler = scheduler;
+	table.simulation_run = 1;
+	return (table);
 }

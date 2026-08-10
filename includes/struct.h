@@ -6,7 +6,7 @@
 /*   By: naportel <naportel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/22 14:36:09 by naportel          #+#    #+#             */
-/*   Updated: 2026/06/26 15:17:38 by naportel         ###   ########.fr       */
+/*   Updated: 2026/08/10 12:07:36 by naportel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,19 @@ typedef enum e_scheduler
 typedef struct s_dongle
 {
 	pthread_mutex_t		mutex;
+    pthread_cond_t      cond;
 	long				available_at;
 	t_heap				heap;
 }						t_dongle;
 
 typedef struct s_table
 {
-	int					coder_qnt;
+	long				coder_qnt;
 	long				burnout;
 	long				comp_time;
 	long				debug_time;
 	long				refactor_time;
-	int					comps_need;
+	long				comps_need;
 	long				dongle_cooldown;
 	t_scheduler			scheduler;
 	int					simulation_run;
@@ -53,8 +54,8 @@ typedef struct s_coder
 	long				last_comp;
 	pthread_t			thread;
 	pthread_mutex_t		coder_mutex;
-	t_dongle			left_dongle;
-	t_dongle			right_dongle;
+	t_dongle			*left_dongle;
+	t_dongle			*right_dongle;
 	t_table				*table;
 }							t_coder;
 

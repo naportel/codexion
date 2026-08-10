@@ -6,7 +6,7 @@
 /*   By: naportel <naportel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 15:21:53 by naportel          #+#    #+#             */
-/*   Updated: 2026/06/22 14:39:26 by naportel         ###   ########.fr       */
+/*   Updated: 2026/08/06 14:02:32 by naportel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 # include <stdio.h>
 # include "struct.h"
 
-void	codexion(t_table *table);
 int		main(int ac, char **av);
 
 #endif

@@ -6,34 +6,34 @@
 /*   By: naportel <naportel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 15:01:23 by naportel          #+#    #+#             */
-/*   Updated: 2026/08/05 14:58:01 by naportel         ###   ########.fr       */
+/*   Updated: 2026/08/10 14:37:07 by naportel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-int	evaluate_coders(t_table *t)
+int	evaluate_coders(t_table *table)
 {
 	int	i;
 	int	all_done;
 
 	i = 0;
 	all_done = 1;
-	while (i < t->coder_qnt)
+	while (i < table->coder_qnt)
 	{
-		pthread_mutex_lock(&t->coders[i].coder_mutex);
-		if (get_current_time() - t->coders[i].last_comp > t->burnout)
+		pthread_mutex_lock(&table->coders[i].coder_mutex);
+		if (get_current_time() - table->coders[i].last_comp > table->burnout)
 		{
-			print_log(&t->coders[i], "burned out");
-			pthread_mutex_unlock(&t->coders[i].coder_mutex);
+			print_log(&table->coders[i], "burned out");
+			pthread_mutex_unlock(&table->coders[i].coder_mutex);
 			return (0);
 		}
-		if (t->comps_min > 0 && t->coders[i].comps_done < t->comps_min)
+		if (table->coders[i].comps_done < table->comps_need)
 			all_done = 0;
-		pthread_mutex_unlock(&t->coders[i].coder_mutex);
+		pthread_mutex_unlock(&table->coders[i].coder_mutex);
 		i++;
 	}
-	if (t->compiles_needed > 0 && all_done)
+	if (all_done)
 		return (0);
 	return (1);
 }
@@ -41,7 +41,7 @@ int	evaluate_coders(t_table *t)
 int	check_simulation(t_table *table)
 {
 	pthread_mutex_lock(&table->state_mutex);
-	if (!table->simulation_running)
+	if (!table->simulation_run)
 	{
 		pthread_mutex_unlock(&table->state_mutex);
 		return (0);
@@ -50,7 +50,7 @@ int	check_simulation(t_table *table)
 	if (!evaluate_coders(table))
 	{
 		pthread_mutex_lock(&table->state_mutex);
-		table->simulation_running = 0;
+		table->simulation_run = 0;
 		pthread_mutex_unlock(&table->state_mutex);
 		return (0);
 	}
@@ -65,7 +65,7 @@ void	*coder_routine(void *arg)
 	coder = (t_coder *)arg;
 	table = coder->table;
 	coder->last_comp = get_current_time();
-	while (table->simulation_running)
+	while (table->simulation_run)
 	{
 		lock_dongles(coder);
 		if (!check_simulation(table))

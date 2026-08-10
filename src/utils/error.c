@@ -6,7 +6,7 @@
 /*   By: naportel <naportel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/19 14:29:18 by naportel          #+#    #+#             */
-/*   Updated: 2026/08/05 16:00:56 by naportel         ###   ########.fr       */
+/*   Updated: 2026/08/10 12:13:14 by naportel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	error(char *msg)
 	if (*msg)
 	{
 		write(2, "Error: ", 7);
-		write(2, &msg, ft_strlen(msg));
+		write(2, msg, ft_strlen(msg));
 	}
 	write(2, "\n", 1);
 	return (0);

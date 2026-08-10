@@ -6,7 +6,7 @@
 /*   By: naportel <naportel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/22 14:01:42 by naportel          #+#    #+#             */
-/*   Updated: 2026/08/05 16:15:54 by naportel         ###   ########.fr       */
+/*   Updated: 2026/08/10 14:27:53 by naportel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,10 @@ void	init_coder(t_table *table, t_coder *coder, int id)
 	coder->id = id;
 	coder->comps_done = 0;
 	coder->last_comp = get_current_time();
-	pthread_mutex_init(coder->coder_mutex);
+	pthread_mutex_init(coder->coder_mutex, NULL);
 	coder->table = table;
-	coder->left_dongle = table->dongles[2 * id + 1];
-	coder->right_dongle = table->dongles[2 * id + 2];
+	coder->left_dongle = &table->dongles[id];
+	coder->right_dongle = &table->dongles[(id + 1) % table->coder_qnt];
 	return ;
 }
 
@@ -78,7 +78,7 @@ void	free_table(t_table *table)
 	{
 		while (i < table->coder_qnt)
 		{
-			free(table->dongles[i].heap.data)
+			free(table->dongles[i].heap.data);
 			pthread_mutex_destroy(&table->dongles[i].mutex);
 			pthread_cond_destroy(&table->dongles[i].cond);
 			i++;

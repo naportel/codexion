@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   threads.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: naportel <naportel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/22 14:01:42 by naportel          #+#    #+#             */
-/*   Updated: 2026/08/10 14:27:53 by naportel         ###   ########.fr       */
+/*   Updated: 2026/08/11 13:50:31 by naportel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,11 @@ int	init_table(t_table *table)
 	i = 0;
 	table->dongles = malloc(sizeof(t_dongle) * table->coder_qnt);
 	table->coders = malloc(sizeof(t_coder) * table->coder_qnt);
+    table->start_time = get_current_time();
 	if (!table->dongles || !table->coders)
 		return (error("Malloc Failed!"));
-	pthread_mutex_init(&table->log_mutex, NULL);
+	pthread_mutex_init(&table->state_mutex, NULL);
+    pthread_mutex_init(&table->log_mutex, NULL);
 	while (i < table->coder_qnt)
 	{
 		init_coder(table, &table->coders[i], i);
@@ -44,7 +46,7 @@ void	init_coder(t_table *table, t_coder *coder, int id)
 	coder->id = id;
 	coder->comps_done = 0;
 	coder->last_comp = get_current_time();
-	pthread_mutex_init(coder->coder_mutex, NULL);
+	pthread_mutex_init(&coder->coder_mutex, NULL);
 	coder->table = table;
 	coder->left_dongle = &table->dongles[id];
 	coder->right_dongle = &table->dongles[(id + 1) % table->coder_qnt];
@@ -89,4 +91,17 @@ void	free_table(t_table *table)
 		free(table->coders);
 	pthread_mutex_destroy(&table->log_mutex);
     return ;
+}
+
+void	join_threads(t_table *table)
+{
+	int	i;
+
+	i = 0;
+	while (i < table->coder_qnt)
+	{
+		pthread_join(table->coders[i].thread, NULL);
+		i++;
+	}
+	pthread_join(table->monitor, NULL);
 }

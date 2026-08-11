@@ -4,10 +4,8 @@ FLAGS = -Wall -Wextra -Werror -pthread
 RM = rm -f
 SRCS = src/main.c \
        src/heap/heap.c \
-       src/heap/init.c \
        src/parsing/parsing.c \
-       src/threads/init.c \
-       src/threads/join.c \
+       src/threads/threads.c \
        src/threads/routines.c \
        src/utils/coder.c \
        src/utils/dongles.c \

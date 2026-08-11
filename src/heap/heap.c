@@ -12,6 +12,16 @@
 
 #include "codexion.h"
 
+int	init_heap(t_heap *heap, int capacity)
+{
+	heap->data = malloc(sizeof(t_coder *) * capacity);
+	if (!heap->data)
+		return (0);
+	heap->size = 0;
+	heap->capacity = capacity;
+	return (1);
+}
+
 int	go_first(t_coder *a, t_coder *b, t_scheduler scheduler)
 {
 	long	deadline_a;
@@ -22,7 +32,7 @@ int	go_first(t_coder *a, t_coder *b, t_scheduler scheduler)
 		if (a->last_comp < b->last_comp)
 			return (1);
 		else
-			return (2);
+			return (0);
 	}
 	else if (scheduler == edf)
 	{
@@ -31,10 +41,8 @@ int	go_first(t_coder *a, t_coder *b, t_scheduler scheduler)
 		if (deadline_a < deadline_b)
 			return (1);
 		else
-			return (2);
+			return (0);
 	}
-	else
-		return (0);
 }
 
 void	coder_swap(t_coder **a, t_coder **b)

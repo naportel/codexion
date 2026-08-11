@@ -6,13 +6,13 @@
 /*   By: naportel <naportel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 15:01:23 by naportel          #+#    #+#             */
-/*   Updated: 2026/08/10 14:37:07 by naportel         ###   ########.fr       */
+/*   Updated: 2026/08/11 13:51:25 by naportel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-int	evaluate_coders(t_table *table)
+static int	evaluate_coders(t_table *table)
 {
 	int	i;
 	int	all_done;

@@ -6,7 +6,7 @@
 /*   By: naportel <naportel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/19 14:29:18 by naportel          #+#    #+#             */
-/*   Updated: 2026/08/10 12:13:14 by naportel         ###   ########.fr       */
+/*   Updated: 2026/08/11 13:54:14 by naportel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	error(char *msg)
 	return (0);
 }
 
-int ft_strlen(char *str)
+static int ft_strlen(char *str)
 {
 	int i;
 

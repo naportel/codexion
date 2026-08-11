@@ -6,13 +6,13 @@
 /*   By: naportel <naportel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/19 14:36:56 by naportel          #+#    #+#             */
-/*   Updated: 2026/08/10 14:21:04 by naportel         ###   ########.fr       */
+/*   Updated: 2026/08/11 13:39:57 by naportel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-long	ft_latoi(char *str)
+static long	ft_latoi(char *str)
 {
 	long	result;
 	int		i;
@@ -31,7 +31,7 @@ long	ft_latoi(char *str)
 	return (result);
 }
 
-int	ft_is_valid_number(char *str)
+static int	ft_is_valid_number(char *str)
 {
 	int	i;
 

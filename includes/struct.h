@@ -20,13 +20,35 @@ typedef enum e_scheduler
 	edf
 }						t_scheduler;
 
+struct s_coder;
+struct s_table;
+
+typedef struct s_heap
+{
+	struct s_coder		**data;
+	int					size;
+	int					capacity;
+}						t_heap;
+
 typedef struct s_dongle
 {
 	pthread_mutex_t		mutex;
-    pthread_cond_t      cond;
+	pthread_cond_t		cond;
 	long				available_at;
 	t_heap				heap;
 }						t_dongle;
+
+typedef struct s_coder
+{
+	int					id;
+	int					comps_done;
+	long				last_comp;
+	pthread_t			thread;
+	pthread_mutex_t		coder_mutex;
+	t_dongle			*left_dongle;
+	t_dongle			*right_dongle;
+	struct s_table		*table;
+}						t_coder;
 
 typedef struct s_table
 {
@@ -45,25 +67,6 @@ typedef struct s_table
 	pthread_t			monitor;
 	pthread_mutex_t		log_mutex;
 	pthread_mutex_t		state_mutex;
-}							t_table;
-
-typedef struct s_coder
-{
-	int					id;
-	int					comps_done;
-	long				last_comp;
-	pthread_t			thread;
-	pthread_mutex_t		coder_mutex;
-	t_dongle			*left_dongle;
-	t_dongle			*right_dongle;
-	t_table				*table;
-}							t_coder;
-
-typedef struct s_heap
-{
-	t_coder				**data;
-	int					size;
-	int					capacity;
-}						t_heap;
+}						t_table;
 
 #endif

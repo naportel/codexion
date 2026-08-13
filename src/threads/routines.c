@@ -6,7 +6,7 @@
 /*   By: naportel <naportel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 15:01:23 by naportel          #+#    #+#             */
-/*   Updated: 2026/08/11 13:51:25 by naportel         ###   ########.fr       */
+/*   Updated: 2026/08/13 13:46:04 by naportel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	evaluate_coders(t_table *table)
 	while (i < table->coder_qnt)
 	{
 		pthread_mutex_lock(&table->coders[i].coder_mutex);
-		if (get_current_time() - table->coders[i].last_comp > table->burnout)
+		if (get_time() - table->coders[i].last_comp > table->burnout)
 		{
 			print_log(&table->coders[i], "burned out");
 			pthread_mutex_unlock(&table->coders[i].coder_mutex);
@@ -40,6 +40,9 @@ static int	evaluate_coders(t_table *table)
 
 int	check_simulation(t_table *table)
 {
+	int	i;
+
+	i = 0;
 	pthread_mutex_lock(&table->state_mutex);
 	if (!table->simulation_run)
 	{
@@ -51,6 +54,13 @@ int	check_simulation(t_table *table)
 	{
 		pthread_mutex_lock(&table->state_mutex);
 		table->simulation_run = 0;
+		while (table->dongles[i++] != NULL)
+		{
+			pthread_mutex_lock(&table->dongles[i]->mutex);
+			table->dongles[i]->available_at = get_time();
+			pthread_cond_broadcast(&table->dongles[i]->cond);
+			pthread_mutex_unlock(&table->dongles[i]->mutex);
+		}
 		pthread_mutex_unlock(&table->state_mutex);
 		return (0);
 	}
@@ -64,7 +74,7 @@ void	*coder_routine(void *arg)
 
 	coder = (t_coder *)arg;
 	table = coder->table;
-	coder->last_comp = get_current_time();
+	coder->last_comp = get_time();
 	while (table->simulation_run)
 	{
 		lock_dongles(coder);
@@ -82,7 +92,7 @@ void	*coder_routine(void *arg)
 		print_log(coder, "is refactoring");
 		usleep(coder->table->refactor_time * 1000);
 	}
-	return ;
+	return (NULL);
 }
 
 void	*monitor_routine(void *table)
@@ -90,5 +100,5 @@ void	*monitor_routine(void *table)
 	(t_table *)table;
 	while (check_simulation((t_table *)table))
 		usleep(1000);
-	return ;
+	return (NULL);
 }

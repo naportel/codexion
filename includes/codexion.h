@@ -6,7 +6,7 @@
 /*   By: naportel <naportel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 15:21:53 by naportel          #+#    #+#             */
-/*   Updated: 2026/08/11 13:54:59 by naportel         ###   ########.fr       */
+/*   Updated: 2026/08/13 12:13:26 by naportel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,6 @@ void	lock_dongles(t_coder *coder);
 void	unlock_dongles(t_coder *coder);
 int		error(char *msg);
 void	print_log(t_coder *coder, char *msg);
-long	get_current_time(void);
+long	get_time(void);
 
 #endif

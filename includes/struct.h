@@ -6,7 +6,7 @@
 /*   By: naportel <naportel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/22 14:36:09 by naportel          #+#    #+#             */
-/*   Updated: 2026/08/10 12:07:36 by naportel         ###   ########.fr       */
+/*   Updated: 2026/08/13 11:59:14 by naportel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,6 @@ typedef struct s_heap
 	int					capacity;
 }						t_heap;
 
-typedef struct s_dongle
-{
-	pthread_mutex_t		mutex;
-	pthread_cond_t		cond;
-	long				available_at;
-	t_heap				heap;
-}						t_dongle;
-
 typedef struct s_coder
 {
 	int					id;
@@ -49,6 +41,15 @@ typedef struct s_coder
 	t_dongle			*right_dongle;
 	struct s_table		*table;
 }						t_coder;
+
+typedef struct s_dongle
+{
+	pthread_mutex_t		mutex;
+	pthread_cond_t		cond;
+	struct s_coder		*holder;
+	long				available_at;
+	t_heap				heap;
+}						t_dongle;
 
 typedef struct s_table
 {

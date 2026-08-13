@@ -40,9 +40,12 @@ int	go_first(t_coder *a, t_coder *b, t_scheduler scheduler)
 		deadline_b = b->last_comp + b->table->burnout;
 		if (deadline_a < deadline_b)
 			return (1);
+        else if (a->id < b->id)
+            return (1);
 		else
 			return (0);
 	}
+    return (0);
 }
 
 void	coder_swap(t_coder **a, t_coder **b)

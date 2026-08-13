@@ -6,7 +6,7 @@
 /*   By: naportel <naportel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/10 12:25:16 by naportel          #+#    #+#             */
-/*   Updated: 2026/08/10 12:25:54 by naportel         ###   ########.fr       */
+/*   Updated: 2026/08/13 12:12:56 by naportel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	print_log(t_coder *coder, char *msg)
 
 	table = coder->table;
 	pthread_mutex_lock(&table->log_mutex);
-	time = get_current_time() - table->start_time;
+	time = get_time() - table->start_time;
 	printf("%ld %d %s\n", time, coder->id + 1, msg);
 	pthread_mutex_unlock(&table->log_mutex);
 }

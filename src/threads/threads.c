@@ -19,7 +19,7 @@ int	init_table(t_table *table)
 	i = 0;
 	table->dongles = malloc(sizeof(t_dongle) * table->coder_qnt);
 	table->coders = malloc(sizeof(t_coder) * table->coder_qnt);
-    table->start_time = get_current_time();
+    table->start_time = get_time();
 	if (!table->dongles || !table->coders)
 		return (error("Malloc Failed!"));
 	pthread_mutex_init(&table->state_mutex, NULL);
@@ -45,7 +45,7 @@ void	init_coder(t_table *table, t_coder *coder, int id)
 {
 	coder->id = id;
 	coder->comps_done = 0;
-	coder->last_comp = get_current_time();
+	coder->last_comp = get_time();
 	pthread_mutex_init(&coder->coder_mutex, NULL);
 	coder->table = table;
 	coder->left_dongle = &table->dongles[id];

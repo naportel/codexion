@@ -6,7 +6,7 @@
 /*   By: naportel <naportel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 15:21:53 by naportel          #+#    #+#             */
-/*   Updated: 2026/08/14 15:29:53 by naportel         ###   ########.fr       */
+/*   Updated: 2026/08/14 17:59:21 by naportel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	*monitor_routine(void *table);
 
 // utils
 void	coder_compile(t_coder *coder);
-void	lock_dongles(t_coder *coder);
+int		lock_dongles(t_coder *coder);
 void	unlock_dongles(t_coder *coder);
 int		error(char *msg);
 void	print_log(t_coder *coder, char *msg, int type);

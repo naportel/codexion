@@ -6,7 +6,7 @@
 /*   By: naportel <naportel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/05 14:05:13 by naportel          #+#    #+#             */
-/*   Updated: 2026/08/14 15:16:04 by naportel         ###   ########.fr       */
+/*   Updated: 2026/08/14 18:22:01 by naportel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,13 @@ static void	release_dongle(t_coder *coder, t_dongle *dongle)
 	pthread_mutex_unlock(&dongle->mutex);
 }
 
-void	lock_dongles(t_coder *coder)
+int	lock_dongles(t_coder *coder)
 {
 	t_dongle	*first;
 	t_dongle	*second;
 
+	if (coder->left_dongle == coder->right_dongle)
+		return (0);
 	if (coder->left_dongle < coder->right_dongle)
 	{
 		first = coder->left_dongle;
@@ -70,11 +72,13 @@ void	lock_dongles(t_coder *coder)
 	}
 	acquire_dongle(coder, first);
 	acquire_dongle(coder, second);
-	return ;
+	return (1);
 }
 
 void	unlock_dongles(t_coder *coder)
 {
+	if (coder->left_dongle == coder->right_dongle)
+		return ;
 	release_dongle(coder, coder->left_dongle);
 	release_dongle(coder, coder->right_dongle);
 	return ;

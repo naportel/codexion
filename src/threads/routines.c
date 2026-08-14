@@ -6,7 +6,7 @@
 /*   By: naportel <naportel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 15:01:23 by naportel          #+#    #+#             */
-/*   Updated: 2026/08/14 17:17:20 by naportel         ###   ########.fr       */
+/*   Updated: 2026/08/14 18:18:00 by naportel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,8 @@ void	*coder_routine(void *arg)
 	coder->last_comp = get_time();
 	while (table->simulation_run)
 	{
-		lock_dongles(coder);
+		if (!lock_dongles(coder))
+			break ;
 		if (!check_simulation(table))
 		{
 			unlock_dongles(coder);

@@ -6,7 +6,7 @@
 /*   By: naportel <naportel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 15:01:23 by naportel          #+#    #+#             */
-/*   Updated: 2026/08/14 15:30:46 by naportel         ###   ########.fr       */
+/*   Updated: 2026/08/14 17:17:20 by naportel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,23 @@ static int	evaluate_coders(t_table *table)
 	return (1);
 }
 
-int	check_simulation(t_table *table)
+static void	release_dongles(t_table *table)
 {
 	int	i;
 
 	i = 0;
+	while (i < table->coder_qnt)
+	{
+		pthread_mutex_lock(&table->dongles[i].mutex);
+		table->dongles[i].available_at = get_time();
+		pthread_cond_broadcast(&table->dongles[i].cond);
+		pthread_mutex_unlock(&table->dongles[i].mutex);
+		i++;
+	}
+}
+
+int	check_simulation(t_table *table)
+{
 	pthread_mutex_lock(&table->state_mutex);
 	if (!table->simulation_run)
 	{
@@ -54,13 +66,7 @@ int	check_simulation(t_table *table)
 	{
 		pthread_mutex_lock(&table->state_mutex);
 		table->simulation_run = 0;
-		while (i++ < table->coder_qnt)
-		{
-			pthread_mutex_lock(&table->dongles[i].mutex);
-			table->dongles[i].available_at = get_time();
-			pthread_cond_broadcast(&table->dongles[i].cond);
-			pthread_mutex_unlock(&table->dongles[i].mutex);
-		}
+		release_dongles(table);
 		pthread_mutex_unlock(&table->state_mutex);
 		return (0);
 	}

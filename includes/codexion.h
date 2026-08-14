@@ -6,7 +6,7 @@
 /*   By: naportel <naportel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 15:21:53 by naportel          #+#    #+#             */
-/*   Updated: 2026/08/13 12:13:26 by naportel         ###   ########.fr       */
+/*   Updated: 2026/08/14 15:29:53 by naportel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ void	heap_push(t_heap *heap, t_coder *coder, t_scheduler type);
 t_coder	*heap_pop(t_heap *heap, t_scheduler type);
 
 // parsing
-int	parse_args(int ac, char **av, t_table *table);
-t_table define_table(char **av, int scheduler);
+int		parse_args(int ac, char **av, t_table *table);
+t_table	define_table(char **av, int scheduler);
 
 // threads
 int		init_table(t_table *table);
@@ -38,7 +38,7 @@ void	init_coder(t_table *table, t_coder *coder, int id);
 int		init_threads(t_table *table);
 void	free_table(t_table *table);
 void	join_threads(t_table *table);
-int	check_simulation(t_table *table);
+int		check_simulation(t_table *table);
 void	*coder_routine(void *arg);
 void	*monitor_routine(void *table);
 
@@ -47,7 +47,7 @@ void	coder_compile(t_coder *coder);
 void	lock_dongles(t_coder *coder);
 void	unlock_dongles(t_coder *coder);
 int		error(char *msg);
-void	print_log(t_coder *coder, char *msg);
+void	print_log(t_coder *coder, char *msg, int type);
 long	get_time(void);
 
 #endif

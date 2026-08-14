@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   threads.c                                             :+:      :+:    :+:   */
+/*   threads.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: naportel <naportel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/22 14:01:42 by naportel          #+#    #+#             */
-/*   Updated: 2026/08/11 13:50:31 by naportel         ###   ########.fr       */
+/*   Updated: 2026/08/14 15:19:03 by naportel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@ int	init_table(t_table *table)
 	i = 0;
 	table->dongles = malloc(sizeof(t_dongle) * table->coder_qnt);
 	table->coders = malloc(sizeof(t_coder) * table->coder_qnt);
-    table->start_time = get_time();
+	table->start_time = get_time();
 	if (!table->dongles || !table->coders)
 		return (error("Malloc Failed!"));
 	pthread_mutex_init(&table->state_mutex, NULL);
-    pthread_mutex_init(&table->log_mutex, NULL);
+	pthread_mutex_init(&table->log_mutex, NULL);
 	while (i < table->coder_qnt)
 	{
 		init_coder(table, &table->coders[i], i);
@@ -63,7 +63,7 @@ int	init_threads(t_table *table)
 		if (pthread_create(&table->coders[i].thread, NULL,
 				coder_routine, &table->coders[i]) != 0)
 		{
-			return error("Thread Creation Failed!");
+			return (error("Thread Creation Failed!"));
 		}
 		i++;
 	}
@@ -90,7 +90,7 @@ void	free_table(t_table *table)
 	if (table->coders)
 		free(table->coders);
 	pthread_mutex_destroy(&table->log_mutex);
-    return ;
+	return ;
 }
 
 void	join_threads(t_table *table)

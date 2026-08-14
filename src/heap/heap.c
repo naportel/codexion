@@ -40,18 +40,18 @@ int	go_first(t_coder *a, t_coder *b, t_scheduler scheduler)
 		deadline_b = b->last_comp + b->table->burnout;
 		if (deadline_a < deadline_b)
 			return (1);
-        else if (a->id < b->id)
-            return (1);
+		else if (a->id < b->id)
+			return (1);
 		else
 			return (0);
 	}
-    return (0);
+	return (0);
 }
 
 void	coder_swap(t_coder **a, t_coder **b)
 {
 	t_coder	*temp;
-	
+
 	temp = *a;
 	*a = *b;
 	*b = temp;
@@ -59,8 +59,8 @@ void	coder_swap(t_coder **a, t_coder **b)
 
 void	heap_push(t_heap *heap, t_coder *coder, t_scheduler type)
 {
-	int current;
-	int parent;
+	int	current;
+	int	parent;
 
 	heap->data[heap->size] = coder;
 	current = heap->size;
@@ -74,17 +74,17 @@ void	heap_push(t_heap *heap, t_coder *coder, t_scheduler type)
 			current = parent;
 		}
 		else
-			break;
+			break ;
 	}
 }
 
 t_coder	*heap_pop(t_heap *heap, t_scheduler type)
 {
 	t_coder	*top_coder;
-	int	current;
-	int	l;
-	int	r;
-	int	high;
+	int		current;
+	int		l;
+	int		r;
+	int		high;
 
 	top_coder = heap->data[0];
 	heap->size--;
@@ -100,7 +100,7 @@ t_coder	*heap_pop(t_heap *heap, t_scheduler type)
 		if (r < heap->size && go_first(heap->data[r], heap->data[high], type))
 			high = r;
 		if (high == current)
-			break;
+			break ;
 		coder_swap(&heap->data[current], &heap->data[high]);
 		current = high;
 	}

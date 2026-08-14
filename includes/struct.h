@@ -6,7 +6,7 @@
 /*   By: naportel <naportel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/22 14:36:09 by naportel          #+#    #+#             */
-/*   Updated: 2026/08/13 11:59:14 by naportel         ###   ########.fr       */
+/*   Updated: 2026/08/14 14:39:11 by naportel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,14 @@ typedef enum e_scheduler
 	edf
 }						t_scheduler;
 
-struct s_coder;
-struct s_table;
+typedef struct s_coder	t_coder;
+typedef struct s_heap	t_heap;
+typedef struct s_dongle	t_dongle;
+typedef struct s_table	t_table;
 
 typedef struct s_heap
 {
-	struct s_coder		**data;
+	t_coder				**data;
 	int					size;
 	int					capacity;
 }						t_heap;
@@ -39,14 +41,14 @@ typedef struct s_coder
 	pthread_mutex_t		coder_mutex;
 	t_dongle			*left_dongle;
 	t_dongle			*right_dongle;
-	struct s_table		*table;
+	t_table				*table;
 }						t_coder;
 
 typedef struct s_dongle
 {
 	pthread_mutex_t		mutex;
 	pthread_cond_t		cond;
-	struct s_coder		*holder;
+	t_coder				*holder;
 	long				available_at;
 	t_heap				heap;
 }						t_dongle;
@@ -64,7 +66,7 @@ typedef struct s_table
 	int					simulation_run;
 	long				start_time;
 	t_dongle			*dongles;
-	struct s_coder		*coders;
+	t_coder				*coders;
 	pthread_t			monitor;
 	pthread_mutex_t		log_mutex;
 	pthread_mutex_t		state_mutex;

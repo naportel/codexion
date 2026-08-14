@@ -6,7 +6,7 @@
 /*   By: naportel <naportel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/19 14:36:56 by naportel          #+#    #+#             */
-/*   Updated: 2026/08/11 13:39:57 by naportel         ###   ########.fr       */
+/*   Updated: 2026/08/14 16:15:00 by naportel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static int	ft_is_valid_number(char *str)
 	i = 0;
 	if (str[i] == '+')
 		i++;
-	if(!str[i])
+	if (!str[i])
 		return (0);
 	while (str[i])
 	{
@@ -63,9 +63,9 @@ static int	parse_schedule(char *schedule)
 
 int	parse_args(int ac, char **av, t_table *table)
 {
-	int	i;
-	int scheduler;
-	long temp;
+	int		i;
+	int		scheduler;
+	long	temp;
 
 	i = 1;
 	if (ac != 9)
@@ -83,13 +83,13 @@ int	parse_args(int ac, char **av, t_table *table)
 	else if (ft_latoi(av[6]) < 1)
 		return (error("Coders must need at least 1 compilation!"));
 	scheduler = parse_schedule(av[8]);
-	if (scheduler >= 2)
-		return error("Scheduler must be exactly either \"fifo\" or \"edf\"!");
+	if (scheduler == 2)
+		return (error("Scheduler must be exactly either \"fifo\" or \"edf\"!"));
 	*table = define_table(av, scheduler);
 	return (1);
 }
 
-t_table define_table(char **av, int scheduler)
+t_table	define_table(char **av, int scheduler)
 {
 	t_table	table;
 

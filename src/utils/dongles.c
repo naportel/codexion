@@ -6,7 +6,7 @@
 /*   By: naportel <naportel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/05 14:05:13 by naportel          #+#    #+#             */
-/*   Updated: 2026/08/14 18:22:01 by naportel         ###   ########.fr       */
+/*   Updated: 2026/08/17 15:07:19 by naportel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,29 @@
 
 static void	acquire_dongle(t_coder *coder, t_dongle *dongle)
 {
-	long	sleep_time;
+	long	now;
 
 	pthread_mutex_lock(&dongle->mutex);
 	heap_push(&dongle->heap, coder, coder->table->scheduler);
-	while (dongle->heap.data[0] != coder || dongle->holder != NULL
-		|| get_time() < dongle->available_at)
+	while (dongle->holder != coder)
 	{
 		if (dongle->holder == NULL && dongle->heap.data[0] == coder)
 		{
-			sleep_time = (dongle->available_at - get_time()) * 1000;
-			if (sleep_time > 0)
+			now = get_time();
+			if (now < dongle->available_at)
 			{
 				pthread_mutex_unlock(&dongle->mutex);
-				usleep(sleep_time);
+				usleep((dongle->available_at - now) * 1000);
 				pthread_mutex_lock(&dongle->mutex);
+				continue;
 			}
+			dongle->holder = coder;
+			heap_pop(&dongle->heap, coder->table->scheduler);
+			print_log(coder, "has taken a dongle", 0);
+			break ;
 		}
-		else
-			pthread_cond_wait(&dongle->cond, &dongle->mutex);
+		pthread_cond_wait(&dongle->cond, &dongle->mutex);
 	}
-	dongle->holder = coder;
-	heap_pop(&dongle->heap, coder->table->scheduler);
-	print_log(coder, "has taken a dongle", 0);
 	pthread_mutex_unlock(&dongle->mutex);
 }
 
@@ -49,7 +49,6 @@ static void	release_dongle(t_coder *coder, t_dongle *dongle)
 		dongle->available_at = get_time() + coder->table->dongle_cooldown;
 		pthread_cond_broadcast(&dongle->cond);
 	}
-	print_log(coder, "has released a dongle", 0);
 	pthread_mutex_unlock(&dongle->mutex);
 }
 
@@ -58,7 +57,7 @@ int	lock_dongles(t_coder *coder)
 	t_dongle	*first;
 	t_dongle	*second;
 
-	if (coder->left_dongle == coder->right_dongle)
+	if (coder->left_dongle == coder->right_dongle || !coder->right_dongle)
 		return (0);
 	if (coder->left_dongle < coder->right_dongle)
 	{

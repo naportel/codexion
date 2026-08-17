@@ -6,7 +6,7 @@
 /*   By: naportel <naportel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 15:01:23 by naportel          #+#    #+#             */
-/*   Updated: 2026/08/14 18:18:00 by naportel         ###   ########.fr       */
+/*   Updated: 2026/08/17 09:51:14 by naportel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	evaluate_coders(t_table *table)
 	while (i < table->coder_qnt)
 	{
 		pthread_mutex_lock(&table->coders[i].coder_mutex);
-		if (get_time() - table->coders[i].last_comp > table->burnout)
+		if ((get_time() - table->coders[i].last_comp) > table->burnout)
 		{
 			print_log(&table->coders[i], "burned out", 0);
 			pthread_mutex_unlock(&table->coders[i].coder_mutex);

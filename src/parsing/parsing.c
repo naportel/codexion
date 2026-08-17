@@ -6,7 +6,7 @@
 /*   By: naportel <naportel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/19 14:36:56 by naportel          #+#    #+#             */
-/*   Updated: 2026/08/14 16:15:00 by naportel         ###   ########.fr       */
+/*   Updated: 2026/08/17 09:53:16 by naportel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	parse_args(int ac, char **av, t_table *table)
 	while (i < 8)
 	{
 		if (!ft_is_valid_number(av[i++]))
-			return (error("Arguments must contain only positive digits!"));
+			return (error("Arguments 1-7 must contain only positive digits!"));
 		temp = ft_latoi(av[i - 1]);
 		if (temp == -1)
 			return (error("Arguments must be valid digits within INT_MAX!"));

@@ -6,7 +6,7 @@
 /*   By: naportel <naportel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 15:21:53 by naportel          #+#    #+#             */
-/*   Updated: 2026/08/14 17:59:21 by naportel         ###   ########.fr       */
+/*   Updated: 2026/08/14 19:38:52 by naportel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ t_table	define_table(char **av, int scheduler);
 
 // threads
 int		init_table(t_table *table);
+int		init_dongle(t_dongle *dongle);
 void	init_coder(t_table *table, t_coder *coder, int id);
 int		init_threads(t_table *table);
 void	free_table(t_table *table);

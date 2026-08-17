@@ -6,7 +6,7 @@
 /*   By: naportel <naportel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/19 14:36:56 by naportel          #+#    #+#             */
-/*   Updated: 2026/08/17 09:53:16 by naportel         ###   ########.fr       */
+/*   Updated: 2026/08/17 11:37:24 by naportel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	parse_args(int ac, char **av, t_table *table)
 	if (ft_latoi(av[1]) < 1)
 		return (error("There must be at least 1 coder!"));
 	else if (ft_latoi(av[6]) < 1)
-		return (error("Coders must need at least 1 compilation!"));
+		return (0);
 	scheduler = parse_schedule(av[8]);
 	if (scheduler == 2)
 		return (error("Scheduler must be exactly either \"fifo\" or \"edf\"!"));

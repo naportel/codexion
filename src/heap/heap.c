@@ -27,25 +27,14 @@ int	go_first(t_coder *a, t_coder *b, t_scheduler scheduler)
 	long	deadline_a;
 	long	deadline_b;
 
-	if (scheduler == fifo)
-	{
-		if (a->last_comp < b->last_comp)
-			return (1);
-		else
-			return (0);
-	}
-	else if (scheduler == edf)
+	if (scheduler == edf)
 	{
 		deadline_a = a->last_comp + a->table->burnout;
 		deadline_b = b->last_comp + b->table->burnout;
-		if (deadline_a < deadline_b)
-			return (1);
-		else if (a->id < b->id)
-			return (1);
-		else
-			return (0);
+		if (deadline_a != deadline_b)
+			return (deadline_a < deadline_b);
 	}
-	return (0);
+	return (a->last_comp < b->last_comp);
 }
 
 void	coder_swap(t_coder **a, t_coder **b)

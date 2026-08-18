@@ -6,7 +6,7 @@
 /*   By: naportel <naportel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/05 14:05:13 by naportel          #+#    #+#             */
-/*   Updated: 2026/08/17 16:35:09 by naportel         ###   ########.fr       */
+/*   Updated: 2026/08/18 15:28:13 by naportel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,12 @@ static void	acquire_dongle(t_coder *coder, t_dongle *dongle)
 			}
 			dongle->holder = coder;
 			heap_pop(&dongle->heap, coder->table->scheduler);
+			pthread_mutex_unlock(&dongle->mutex);
 			print_log(coder, "has taken a dongle", 0);
 			break ;
 		}
 		pthread_cond_wait(&dongle->cond, &dongle->mutex);
 	}
-	pthread_mutex_unlock(&dongle->mutex);
 }
 
 static void	release_dongle(t_coder *coder, t_dongle *dongle)
@@ -59,12 +59,9 @@ int	lock_dongles(t_coder *coder)
 
 	if (coder->left_dongle == coder->right_dongle || !coder->right_dongle)
 		return (0);
-	if (coder->left_dongle < coder->right_dongle)
-	{
-		first = coder->left_dongle;
-		second = coder->right_dongle;
-	}
-	else
+	first = coder->left_dongle;
+	second = coder->right_dongle;
+	if (first > second)
 	{
 		first = coder->right_dongle;
 		second = coder->left_dongle;

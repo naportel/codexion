@@ -34,7 +34,9 @@ int	go_first(t_coder *a, t_coder *b, t_scheduler scheduler)
 		if (deadline_a != deadline_b)
 			return (deadline_a < deadline_b);
 	}
-	return (a->last_comp < b->last_comp);
+	if (a->last_comp != b->last_comp)
+		return (a->last_comp < b->last_comp);
+	return (a->id < b->id);
 }
 
 void	coder_swap(t_coder **a, t_coder **b)

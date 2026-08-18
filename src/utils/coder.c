@@ -6,7 +6,7 @@
 /*   By: naportel <naportel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/05 14:29:45 by naportel          #+#    #+#             */
-/*   Updated: 2026/08/17 15:45:45 by naportel         ###   ########.fr       */
+/*   Updated: 2026/08/18 11:01:06 by naportel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 void	coder_compile(t_coder *coder)
 {
 	print_log(coder, "is compiling", 0);
-	pthread_mutex_lock(&coder->coder_mutex);
-	coder->last_comp = get_time();
+	update_last_comp(coder);
 	usleep(coder->table->comp_time * 1000);
+	pthread_mutex_lock(&coder->coder_mutex);
 	coder->comps_done++;
 	pthread_mutex_unlock(&coder->coder_mutex);
 	return ;
@@ -29,7 +29,7 @@ void	print_log(t_coder *coder, char *msg, int type)
 	long	time;
 
 	table = coder->table;
-	if (table->simulation_run)
+	if (is_running(table))
 	{
 		pthread_mutex_lock(&table->log_mutex);
 		time = get_time() - table->start_time;

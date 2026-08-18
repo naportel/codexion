@@ -6,7 +6,7 @@
 /*   By: naportel <naportel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/05 14:05:13 by naportel          #+#    #+#             */
-/*   Updated: 2026/08/17 15:07:19 by naportel         ###   ########.fr       */
+/*   Updated: 2026/08/17 16:35:09 by naportel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	acquire_dongle(t_coder *coder, t_dongle *dongle)
 				pthread_mutex_unlock(&dongle->mutex);
 				usleep((dongle->available_at - now) * 1000);
 				pthread_mutex_lock(&dongle->mutex);
-				continue;
+				continue ;
 			}
 			dongle->holder = coder;
 			heap_pop(&dongle->heap, coder->table->scheduler);

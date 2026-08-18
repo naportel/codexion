@@ -6,7 +6,7 @@
 /*   By: naportel <naportel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 15:21:53 by naportel          #+#    #+#             */
-/*   Updated: 2026/08/14 19:38:52 by naportel         ###   ########.fr       */
+/*   Updated: 2026/08/18 11:02:04 by naportel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ void	join_threads(t_table *table);
 int		check_simulation(t_table *table);
 void	*coder_routine(void *arg);
 void	*monitor_routine(void *table);
+void	update_last_comp(t_coder *coder);
+int		is_running(t_table *table);
 
 // utils
 void	coder_compile(t_coder *coder);

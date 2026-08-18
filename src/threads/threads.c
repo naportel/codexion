@@ -6,30 +6,47 @@
 /*   By: naportel <naportel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/22 14:01:42 by naportel          #+#    #+#             */
-/*   Updated: 2026/08/14 19:36:43 by naportel         ###   ########.fr       */
+/*   Updated: 2026/08/18 12:11:42 by naportel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-void	free_table(t_table *table)
+static void free_dongles(t_table *table)
 {
 	int	i;
 
 	i = 0;
-	if (table->dongles)
+	while (i < table->coder_qnt)
 	{
-		while (i < table->coder_qnt)
-		{
-			free(table->dongles[i].heap.data);
-			pthread_mutex_destroy(&table->dongles[i].mutex);
-			pthread_cond_destroy(&table->dongles[i].cond);
-			i++;
-		}
-		free(table->dongles);
+		free(table->dongles[i].heap.data);
+		pthread_mutex_destroy(&table->dongles[i].mutex);
+		pthread_cond_destroy(&table->dongles[i].cond);
+		i++;
 	}
+	free(table->dongles);
+}
+
+static void free_coders(t_table *table)
+{
+	int	i;
+	
+	i = 0;
+	while (i < table->coder_qnt)
+	{
+		pthread_mutex_destroy(&table->coders[i].coder_mutex);
+		i++;
+	}
+	free(table->coders);
+}
+
+void	free_table(t_table *table)
+{
+	if (table->dongles)
+		free_dongles(table);
 	if (table->coders)
-		free(table->coders);
+		free_coders(table);
+	pthread_mutex_destroy(&table->state_mutex);
 	pthread_mutex_destroy(&table->log_mutex);
 	return ;
 }

@@ -6,13 +6,13 @@
 /*   By: naportel <naportel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/22 14:01:42 by naportel          #+#    #+#             */
-/*   Updated: 2026/08/18 12:11:42 by naportel         ###   ########.fr       */
+/*   Updated: 2026/08/21 13:57:41 by naportel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-static void free_dongles(t_table *table)
+static void	free_dongles(t_table *table)
 {
 	int	i;
 
@@ -27,10 +27,10 @@ static void free_dongles(t_table *table)
 	free(table->dongles);
 }
 
-static void free_coders(t_table *table)
+static void	free_coders(t_table *table)
 {
 	int	i;
-	
+
 	i = 0;
 	while (i < table->coder_qnt)
 	{

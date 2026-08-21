@@ -6,7 +6,7 @@
 /*   By: naportel <naportel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/14 19:36:00 by naportel          #+#    #+#             */
-/*   Updated: 2026/08/14 19:45:11 by naportel         ###   ########.fr       */
+/*   Updated: 2026/08/21 13:46:41 by naportel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	init_table(t_table *table)
 	i = 0;
 	while (i < table->coder_qnt)
 	{
-		if (!init_dongle(&table->dongles[i], table->coder_qnt))
+		if (!init_dongle(&table->dongles[i], 2))
 			return (0);
 		i++;
 	}

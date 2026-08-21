@@ -6,7 +6,7 @@
 /*   By: naportel <naportel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/19 12:03:57 by naportel          #+#    #+#             */
-/*   Updated: 2026/08/14 15:04:03 by naportel         ###   ########.fr       */
+/*   Updated: 2026/08/21 14:06:57 by naportel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,15 @@ int	main(int ac, char **av)
 	if (!parse_args(ac, av, &table))
 		return (0);
 	if (!init_table(&table))
+	{
+		free_table(&table);
 		return (0);
+	}
 	if (!init_threads(&table))
+	{
+		free_table(&table);
 		return (0);
+	}
 	join_threads(&table);
 	free_table(&table);
 	return (0);

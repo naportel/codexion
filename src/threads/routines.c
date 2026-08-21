@@ -6,7 +6,7 @@
 /*   By: naportel <naportel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 15:01:23 by naportel          #+#    #+#             */
-/*   Updated: 2026/08/18 12:14:31 by naportel         ###   ########.fr       */
+/*   Updated: 2026/08/21 13:59:14 by naportel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,10 @@ static int	evaluate_coders(t_table *table)
 		pthread_mutex_lock(&table->coders[i].coder_mutex);
 		if ((get_time() - table->coders[i].last_comp) > table->burnout)
 		{
-			print_log(&table->coders[i], "burned out", 0);
+			pthread_mutex_lock(&table->state_mutex);
+			table->simulation_run = 0;
+			pthread_mutex_unlock(&table->state_mutex);
+			print_log(&table->coders[i], "burned out", 4);
 			pthread_mutex_unlock(&table->coders[i].coder_mutex);
 			return (0);
 		}
@@ -59,9 +62,6 @@ int	check_simulation(t_table *table)
 		return (0);
 	if (!evaluate_coders(table))
 	{
-		pthread_mutex_lock(&table->state_mutex);
-		table->simulation_run = 0;
-		pthread_mutex_unlock(&table->state_mutex);
 		release_dongles(table);
 		return (0);
 	}
@@ -76,7 +76,7 @@ void	*coder_routine(void *arg)
 	coder = (t_coder *)arg;
 	table = coder->table;
 	update_last_comp(coder);
-	while (is_running(table) || coder->comps_done < table->comps_need)
+	while (is_running(table) && coder->comps_done < table->comps_need)
 	{
 		if (!lock_dongles(coder))
 			break ;

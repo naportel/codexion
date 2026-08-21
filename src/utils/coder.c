@@ -6,7 +6,7 @@
 /*   By: naportel <naportel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/05 14:29:45 by naportel          #+#    #+#             */
-/*   Updated: 2026/08/18 11:01:06 by naportel         ###   ########.fr       */
+/*   Updated: 2026/08/21 13:59:36 by naportel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	print_log(t_coder *coder, char *msg, int type)
 	long	time;
 
 	table = coder->table;
-	if (is_running(table))
+	if (is_running(table) || type == 4)
 	{
 		pthread_mutex_lock(&table->log_mutex);
 		time = get_time() - table->start_time;

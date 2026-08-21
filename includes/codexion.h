@@ -34,7 +34,7 @@ t_table	define_table(char **av, int scheduler);
 
 // threads
 int		init_table(t_table *table);
-int		init_dongle(t_dongle *dongle);
+int		init_dongle(t_dongle *dongle, int capacity);
 void	init_coder(t_table *table, t_coder *coder, int id);
 int		init_threads(t_table *table);
 void	free_table(t_table *table);

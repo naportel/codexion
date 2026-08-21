@@ -33,6 +33,7 @@ int	go_first(t_coder *a, t_coder *b, t_scheduler scheduler)
 		deadline_b = b->last_comp + b->table->burnout;
 		if (deadline_a != deadline_b)
 			return (deadline_a < deadline_b);
+		return (a->id < b->id);
 	}
 	if (a->last_comp != b->last_comp)
 		return (a->last_comp < b->last_comp);

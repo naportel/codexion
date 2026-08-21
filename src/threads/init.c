@@ -32,18 +32,18 @@ int	init_table(t_table *table)
 	i = 0;
 	while (i < table->coder_qnt)
 	{
-		if (!init_dongle(&table->dongles[i]))
+		if (!init_dongle(&table->dongles[i], table->coder_qnt))
 			return (0);
 		i++;
 	}
 	return (1);
 }
 
-int	init_dongle(t_dongle *dongle)
+int	init_dongle(t_dongle *dongle, int capacity)
 {
 	pthread_mutex_init(&dongle->mutex, NULL);
 	pthread_cond_init(&dongle->cond, NULL);
-	if (!init_heap(&dongle->heap, 1))
+	if (!init_heap(&dongle->heap, capacity))
 		return (error("Malloc Failed!"));
 	dongle->holder = NULL;
 	dongle->available_at = get_time();

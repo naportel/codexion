@@ -12,21 +12,41 @@ The program only ends once all of the coders have done all their compiles or whe
 
 ### Resource Contetion
 
+Resource contention is managed by assigning a ```pthread_mutex_t``` to each USB dongle. This ensures that only one coder can acquire a specific dongle at any given time, preventing data races and ensuring consistent state during the compilation process.
+
 ### Deadlock Prevention
+
+Deadlocks are avoided by enforcing a strict resource acquisition order. Coders are designed to always attempt to acquire the dongle with the lower index first, followed by the higher index. This cyclic dependency breaking is a standard technique in synchronization problems to guarantee that the system can always progress.
 
 ### Starvation
 
-### Burnout
+To ensure fairness and prevent any single coder from being indefinitely blocked by others, the program implements scheduling policies: FIFO (First-In, First-Out) and EDF (Earliest Deadline First). These policies dictate the order in which waiting coders are granted access to requested dongles.
+
+### Burn out
+
+A dedicated monitor thread continuously evaluates the state of all coders. It checks the time elapsed since each coder's last successful compilation. If this interval exceeds the ```time_to_burnout``` threshold, the monitor flags a burnout and initiates the termination sequence for the simulation.
 
 ### Dongle Cooldown
 
-## Thread synchronization mechanisms
+To simulate physical constraints, each dongle enforces a mandatory cooldown period after being released. A timestamp is updated upon release, and acquisition requests are blocked until the current time surpasses the release timestamp plus the ```dongle_cooldown``` duration.
 
+## Thread synchronization mechanisms
+git@vogsphere.42.rio:vogsphere/intra-uuid-43659481-64e6-43a2-b348-13ec0744a274-7429932-naportel
 ### Mutex
+
+```pthread_mutex_t``` is used extensively to provide mutual exclusion. It protects shared data structures, such as the table state and individual dongle statuses, ensuring that concurrent thread access does not result in race conditions or inconsistent data states.
 
 ### Condition Variables
 
+pthread_cond_t is utilized in conjunction with mutexes to enable efficient thread signaling. It allows threads (coders) to block and wait for specific state changes—such as a dongle becoming available—without actively polling, which reduces CPU overhead. When a resource is released, the monitor signals the condition variable to wake the appropriate waiting thread
+
 ### Scheduling Policies (FIFO / EDF)
+
+The scheduler acts as a centralized controller implemented with pthread_mutex_t and custom logic to manage queueing of threads.
+
+- **FIFO (First-In, First-Out)**: Maintains a strict queue order based on the arrival time of the request.
+- **EDF (Earliest Deadline First)**: Prioritizes requests based on the urgency of the coder's next required compilation, calculated from their last activity and time_to_burnout constraints.
+
 
 # Instructions
 
@@ -60,3 +80,6 @@ For this project I have utilized AI to check if there's any bugs or small detail
 ### Fun Fact
 
 This project is inspired on another 42's project called "Philosophers", which instead of coders it was philosophers, and instead of USB dongles it was forks.
+
+- - -
+- - -

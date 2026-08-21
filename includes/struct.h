@@ -6,7 +6,7 @@
 /*   By: naportel <naportel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/22 14:36:09 by naportel          #+#    #+#             */
-/*   Updated: 2026/08/14 14:39:11 by naportel         ###   ########.fr       */
+/*   Updated: 2026/08/21 14:30:36 by naportel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct s_coder
 	int					id;
 	int					comps_done;
 	long				last_comp;
+	long				request_ticket;
 	pthread_t			thread;
 	pthread_mutex_t		coder_mutex;
 	t_dongle			*left_dongle;
@@ -50,6 +51,7 @@ typedef struct s_dongle
 	pthread_cond_t		cond;
 	t_coder				*holder;
 	long				available_at;
+	long				next_ticket;
 	t_heap				heap;
 }						t_dongle;
 
